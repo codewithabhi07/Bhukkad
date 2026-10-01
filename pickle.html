@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🥭 Pickles (Lonache) Price List - Lucky Traders</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="with-bg">
+
+<!-- Header & Navigation -->
+<header>
+  <nav class="navbar">
+    <a href="index.html" class="nav-brand">
+      <h1>🌶️ Lucky Traders</h1>
+      <span class="subtitle">EST. PUNE</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="masala.html">🌶️ Masalas</a></li>
+      <li><a href="chutney.html">🥜 Chutneys</a></li>
+      <li><a href="pickle.html" class="active">🥭 Pickles</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="cart-btn" onclick="toggleCartDrawer()">
+        🛒 Cart <span class="cart-count-badge" style="display:none;">0</span>
+      </button>
+      <div id="user-nav-container" class="user-nav">
+        <a href="login.html" class="nav-login-btn">Login / Register</a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main class="container">
+  <div class="section-header">
+    <h2>🥭 Traditional Homemade Pickles (लोणचे)</h2>
+    <p>Aged in earthen jars with cold-pressed mustard oil, fenugreek, and aromatic spices.</p>
+  </div>
+
+  <!-- Interactive Table Loaded from SQL -->
+  <div class="table-container">
+    <table class="spice-table">
+      <caption>🥭 Pickle Price List (Live from SQL Database)</caption>
+      <thead>
+        <tr>
+          <th>Photo</th>
+          <th>मराठी नाव (Marathi Name)</th>
+          <th>Product Name</th>
+          <th>Price (1 Kg)</th>
+          <th>Price (250 Gm)</th>
+          <th>Instant Actions</th>
+        </tr>
+      </thead>
+      <tbody id="pickle-table-body">
+        <tr>
+          <td colspan="6" style="text-align:center; padding: 25px;">Loading pickles from SQL...</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="text-align: center; margin: 30px 0;">
+    <button class="btn-checkout" style="width: auto; padding: 12px 28px;" onclick="toggleCartDrawer()">
+      🛒 View Cart & Place Order
+    </button>
+    <a href="index.html" class="btn-home" style="display:inline-block; margin-left: 10px; padding: 12px 24px;">
+      ← Back to Home
+    </a>
+  </div>
+</main>
+
+<!-- Cart Drawer -->
+<div id="cart-overlay" class="cart-overlay" onclick="toggleCartDrawer()"></div>
+<div id="cart-drawer" class="cart-drawer">
+  <div class="cart-drawer-header">
+    <h3>🛒 Your Spice Basket</h3>
+    <button class="close-drawer-btn" onclick="toggleCartDrawer()">&times;</button>
+  </div>
+  <div id="cart-items-container" class="cart-drawer-items"></div>
+  <div class="cart-drawer-footer">
+    <div class="cart-calc-row"><span>Subtotal:</span><span id="cart-subtotal">₹0.00</span></div>
+    <div class="cart-calc-row"><span>CGST (2.5%):</span><span id="cart-cgst">₹0.00</span></div>
+    <div class="cart-calc-row"><span>SGST (2.5%):</span><span id="cart-sgst">₹0.00</span></div>
+    <div class="cart-calc-total"><span>Total Amount:</span><span id="cart-total">₹0.00</span></div>
+    <button id="cart-checkout-btn" class="btn-checkout" onclick="openCheckoutModal()">Proceed to Checkout →</button>
+  </div>
+</div>
+
+<!-- Multi-Step Checkout Modal: Step 1 (Info) => Step 2 (Payment) => Bill -->
+<div id="checkout-modal" class="modal">
+  <div class="modal-content" style="max-width: 480px;">
+    
+    <!-- STEP 1: INFO -->
+    <div id="checkout-step-info">
+      <div class="modal-header">
+        <h2>📋 Step 1: Customer Details</h2>
+        <button class="close-modal-btn" onclick="closeCheckoutModal()">&times;</button>
+      </div>
+      <div class="form-group">
+        <label for="checkout-name">Your Full Name *</label>
+        <input type="text" id="checkout-name" class="form-control" placeholder="e.g. Lalit Kumar" required>
+      </div>
+      <div class="form-group">
+        <label for="checkout-phone">Mobile Phone Number *</label>
+        <input type="tel" id="checkout-phone" class="form-control" placeholder="10-digit mobile number" required pattern="[0-9]{10}">
+      </div>
+      <div class="form-group">
+        <label for="checkout-address">Delivery Address (Pune & Nationwide) *</label>
+        <textarea id="checkout-address" class="form-control" rows="2" placeholder="House/Flat No, Street, Hadapsar, Pune" required></textarea>
+      </div>
+      <button type="button" class="btn-confirm-order" onclick="goToCheckoutStep('payment')">
+        Proceed to Payment ➔
+      </button>
+    </div>
+
+    <!-- STEP 2: PAYMENT -->
+    <div id="checkout-step-payment" style="display: none;">
+      <div class="modal-header">
+        <h2>💳 Step 2: Payment Method</h2>
+        <button class="close-modal-btn" onclick="closeCheckoutModal()">&times;</button>
+      </div>
+      
+      <div id="payment-summary-display" class="checkout-summary-box"></div>
+
+      <div class="form-group">
+        <label><b>Select Payment Method:</b></label>
+        <div style="margin: 8px 0; display:flex; flex-direction:column; gap:8px;">
+          <label style="display:flex; align-items:center; gap:8px; cursor:pointer; background:#f9f9f9; padding:10px 12px; border-radius:6px; border:1px solid #ddd;">
+            <input type="radio" name="paymentMethod" value="Cash on Delivery" checked onchange="togglePaymentMethodDetails('COD')">
+            <span>💵 <b>Cash on Delivery (COD)</b></span>
+          </label>
+          <label style="display:flex; align-items:center; gap:8px; cursor:pointer; background:#f9f9f9; padding:10px 12px; border-radius:6px; border:1px solid #ddd;">
+            <input type="radio" name="paymentMethod" value="UPI" onchange="togglePaymentMethodDetails('UPI')">
+            <span>⚡ <b>Instant UPI / QR Code</b> (GPay, PhonePe, Paytm)</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- UPI QR Code display box -->
+      <div id="upi-qr-box" style="display:none; text-align:center; background:#fdf5eb; border:1px dashed #d35400; padding:12px; border-radius:8px; margin-bottom:15px;">
+        <p style="font-size:0.85rem; font-weight:bold; color:#b75304; margin-bottom:6px;">Scan & Pay via UPI</p>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=upi://pay?pa=luckytraders@upi&pn=LuckyTraders" alt="UPI QR Code" style="border:1px solid #ccc; border-radius:6px; background:white; padding:4px;">
+        <p style="font-size:0.8rem; margin-top:5px; color:#555;">UPI ID: <b>luckytraders@upi</b></p>
+      </div>
+
+      <div style="display:flex; gap:10px;">
+        <button type="button" class="btn-home" style="flex:1;" onclick="goToCheckoutStep('info')">
+          ← Back
+        </button>
+        <button type="button" id="submit-order-btn" class="btn-confirm-order" style="flex:2;" onclick="submitOrder()">
+          Confirm & View Bill 🧾
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <p><b>Lucky Traders</b> • Hadapsar Pune, India • GSTIN: 31AKAKA0520A0K1</p>
+</footer>
+
+<script src="app.js"></script>
+<script>
+  let pickleProducts = [];
+
+  async function loadPickles() {
+    try {
+      const res = await fetch(`${API_BASE}/products?category=pickles`);
+      const data = await res.json();
+      if (data.success) {
+        pickleProducts = data.products;
+        const tbody = document.getElementById('pickle-table-body');
+        tbody.innerHTML = pickleProducts.map(p => `
+          <tr>
+            <td style="text-align:center;">
+              <img src="${p.image_url}" class="table-prod-img" alt="${p.name}" onerror="this.src='https://florafoods.in/wp-content/uploads/2023/04/Mango-Pickle-5.jpg'">
+            </td>
+            <td style="color:#27ae60; font-weight:bold; font-size:1.05rem;">${p.marathi_name || '-'}</td>
+            <td><b>${p.name}</b></td>
+            <td class="price-tag">₹${p.price_1kg}</td>
+            <td class="price-tag">₹${p.price_250g}</td>
+            <td>
+              <div class="table-action-btns">
+                <button class="btn-sm-order" onclick="addPickle(${p.id}, '1 Kg')">+ 1 Kg</button>
+                <button class="btn-sm-order" style="background:#d35400;" onclick="addPickle(${p.id}, '250 Gm')">+ 250 Gm</button>
+                <button class="btn-sm-order" style="background:#27ae60;" onclick="buyPickleNow(${p.id})">Buy</button>
+              </div>
+            </td>
+          </tr>
+        `).join('');
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  function addPickle(id, weight) {
+    const item = pickleProducts.find(p => p.id === id);
+    if (item) Cart.addItem(item, weight, 1);
+  }
+
+  function buyPickleNow(id) {
+    const item = pickleProducts.find(p => p.id === id);
+    if (item) quickBuy(item.id, item.name, item.price_1kg, item.price_250g, '1 Kg', item.image_url, item.marathi_name);
+  }
+
+
+  document.addEventListener('DOMContentLoaded', loadPickles);
+</script>
+</body>
+</html>

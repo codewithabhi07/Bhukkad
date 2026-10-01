@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GST Tax Invoice Receipt - Lucky Traders</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="with-bg">
+
+<!-- Header & Navigation -->
+<header>
+  <nav class="navbar">
+    <a href="index.html" class="nav-brand">
+      <h1>🌶️ Lucky Traders</h1>
+      <span class="subtitle">EST. PUNE</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="masala.html">Masalas</a></li>
+      <li><a href="chutney.html">Chutneys</a></li>
+      <li><a href="pickle.html">Pickles</a></li>
+    </ul>
+    <div class="nav-right">
+      <div id="user-nav-container" class="user-nav">
+        <a href="login.html" class="nav-login-btn">Account</a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main class="container">
+  <div class="receipt-wrapper">
+    <div class="receipt-card" id="receipt-card">
+      <div class="receipt-header">
+        <h2>🌶️ Lucky Traders</h2>
+        <p><b>TRADITIONAL SPICES & CONDIMENTS</b></p>
+        <p>GSTIN: 31AKAKA0520A0K1</p>
+        <p>Shop 4, Main Bazar, Hadapsar, Pune - 411002</p>
+        <p>Helpline: +91 98900 12345</p>
+        <div id="order-status-badge-container">
+          <span class="receipt-status-badge" id="receipt-status">Confirmed</span>
+        </div>
+      </div>
+
+      <div class="receipt-meta">
+        <div>
+          <span>Order No:</span> <b id="receipt-order-no">ORD-....</b>
+        </div>
+        <div>
+          <span>Date:</span> <span id="receipt-date">Loading...</span>
+        </div>
+      </div>
+
+      <div class="receipt-customer-box">
+        <div><b>Billed To:</b> <span id="receipt-customer-name">...</span></div>
+        <div><b>Phone:</b> <span id="receipt-customer-phone">...</span></div>
+        <div><b>Address:</b> <span id="receipt-customer-address">...</span></div>
+        <div><b>Payment:</b> <span id="receipt-payment-method">Cash on Delivery</span></div>
+      </div>
+
+      <table class="receipt-items-table">
+        <thead>
+          <tr>
+            <th>Item & Size</th>
+            <th style="text-align:center;">Qty</th>
+            <th style="text-align:right;">Rate</th>
+            <th style="text-align:right;">Amount</th>
+          </tr>
+        </thead>
+        <tbody id="receipt-items-tbody">
+          <tr>
+            <td colspan="4" style="text-align:center; padding: 20px;">Fetching order details from SQL...</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="receipt-totals">
+        <div class="receipt-totals-row">
+          <span>Taxable Subtotal:</span>
+          <span id="receipt-subtotal">₹0.00</span>
+        </div>
+        <div class="receipt-totals-row">
+          <span>CGST (2.5%):</span>
+          <span id="receipt-cgst">₹0.00</span>
+        </div>
+        <div class="receipt-totals-row">
+          <span>SGST (2.5%):</span>
+          <span id="receipt-sgst">₹0.00</span>
+        </div>
+        <div class="receipt-totals-row receipt-grand-total">
+          <span>Grand Total:</span>
+          <span id="receipt-total">₹0.00</span>
+        </div>
+      </div>
+
+      <div class="receipt-footer">
+        <p>Thank you for choosing Lucky Traders! 🙏</p>
+        <p style="font-size: 0.75rem; color: #777; margin-top: 5px;">This is a computer-generated tax invoice verified by SQL Database.</p>
+      </div>
+
+      <div class="receipt-actions">
+        <button class="btn-print" onclick="window.print()">🖨️ Print Receipt</button>
+        <a href="index.html" class="btn-home">🛒 Order More</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <p><b>Lucky Traders</b> • Hadapsar Pune, India • GSTIN: 31AKAKA0520A0K1</p>
+</footer>
+
+<script src="app.js"></script>
+<script>
+  async function loadReceipt() {
+    const params = new URLSearchParams(window.location.search);
+    let orderNumber = params.get('order');
+
+    // If no order number in query, check if we have a default demo or fetch recent order
+    if (!orderNumber) {
+      orderNumber = 'ORD-3112';
+    }
+
+    try {
+      const res = await fetch(`${API_BASE}/orders/${encodeURIComponent(orderNumber)}`);
+      const data = await res.json();
+
+      if (!data.success || !data.order) {
+        document.getElementById('receipt-items-tbody').innerHTML = `
+          <tr>
+            <td colspan="4" style="text-align:center; color: red; padding: 20px;">
+              Order "${orderNumber}" not found in SQL database.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      const ord = data.order;
+      document.getElementById('receipt-order-no').textContent = ord.order_number;
+      document.getElementById('receipt-status').textContent = ord.status;
+      
+      // Format date
+      const dateObj = new Date(ord.created_at);
+      document.getElementById('receipt-date').textContent = isNaN(dateObj) ? ord.created_at : dateObj.toLocaleString('en-IN');
+      
+      document.getElementById('receipt-customer-name').textContent = ord.customer_name;
+      document.getElementById('receipt-customer-phone').textContent = ord.customer_phone;
+      document.getElementById('receipt-customer-address').textContent = ord.customer_address;
+      document.getElementById('receipt-payment-method').textContent = ord.payment_method;
+
+      // Populate Items
+      const tbody = document.getElementById('receipt-items-tbody');
+      tbody.innerHTML = (ord.items || []).map(item => `
+        <tr>
+          <td>
+            <b>${item.product_name}</b><br>
+            <span style="font-size:0.75rem; color:#666;">(${item.weight})</span>
+          </td>
+          <td style="text-align:center;">${item.quantity}</td>
+          <td style="text-align:right;">₹${item.unit_price}</td>
+          <td style="text-align:right;">₹${item.item_subtotal}</td>
+        </tr>
+      `).join('');
+
+      document.getElementById('receipt-subtotal').textContent = `₹${ord.subtotal}`;
+      document.getElementById('receipt-cgst').textContent = `₹${ord.cgst}`;
+      document.getElementById('receipt-sgst').textContent = `₹${ord.sgst}`;
+      document.getElementById('receipt-total').textContent = `₹${ord.total_amount}`;
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', loadReceipt);
+</script>
+</body>
+</html>

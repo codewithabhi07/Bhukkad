@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lucky Traders - Authentic Maharashtrian Spices, Chutneys & Pickles</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="with-bg">
+
+<!-- Header & Navigation -->
+<header>
+  <nav class="navbar">
+    <a href="index.html" class="nav-brand">
+      <h1>🌶️ Lucky Traders</h1>
+      <span class="subtitle">EST. PUNE</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="masala.html">🌶️ Masalas</a></li>
+      <li><a href="chutney.html">🥜 Chutneys</a></li>
+      <li><a href="pickle.html">🥭 Pickles</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="cart-btn" onclick="toggleCartDrawer()">
+        🛒 Cart <span class="cart-count-badge" style="display:none;">0</span>
+      </button>
+      <div id="user-nav-container" class="user-nav">
+        <a href="login.html" class="nav-login-btn">Login / Register</a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<!-- Hero Section -->
+<section class="hero">
+  <h2>Authentic Maharashtrian Spices & Homemade Condiments</h2>
+  <p>Freshly stone-ground aromatic masalas, crispy roasted dry chutneys, and sun-cured traditional pickles delivered directly from Hadapsar, Pune.</p>
+  <div class="hero-badges">
+    <span class="hero-badge-pill">✨ 100% Pure & Preservative Free</span>
+    <span class="hero-badge-pill">🌶️ Traditional Stone-Ground</span>
+    <span class="hero-badge-pill">⚡ Direct SQL Live Orders</span>
+    <span class="hero-badge-pill">📦 Available in 250g & 1kg Packs</span>
+  </div>
+</section>
+
+<!-- Main Storefront Container -->
+<main class="container">
+  
+  <!-- Categories Showcase -->
+  <section id="categories">
+    <div class="section-header">
+      <h2>Explore Our Categories</h2>
+      <p>Select your favorite traditional Maharashtrian specialties</p>
+    </div>
+    
+    <div class="categories-grid">
+      <!-- Masalas Card -->
+      <a href="masala.html" class="category-card">
+        <div class="category-img-wrap">
+          <img src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80" alt="Masalas">
+        </div>
+        <div class="category-card-body">
+          <h3>🌶️ Masalas</h3>
+          <p>Kanda Lasun, Special Masala, Goda Masala, Bedgi Mirchi, and more.</p>
+          <span class="category-card-btn">View Price List & Order →</span>
+        </div>
+      </a>
+
+      <!-- Chutneys Card -->
+      <a href="chutney.html" class="category-card">
+        <div class="category-img-wrap">
+          <img src="https://5.imimg.com/data5/VC/BS/MY-32260496/dry-chutney-1000x1000.jpg" alt="Chutneys">
+        </div>
+        <div class="category-card-body">
+          <h3>🥜 Dry Chutneys</h3>
+          <p>Solapur Peanut, Roasted Garlic, Til (Sesame), and Jawas (Flaxseed).</p>
+          <span class="category-card-btn">View Price List & Order →</span>
+        </div>
+      </a>
+
+      <!-- Pickles Card -->
+      <a href="pickle.html" class="category-card">
+        <div class="category-img-wrap">
+          <img src="https://florafoods.in/wp-content/uploads/2023/04/Mango-Pickle-5.jpg" alt="Pickles">
+        </div>
+        <div class="category-card-body">
+          <h3>🥭 Pickles (Lonache)</h3>
+          <p>Spiced Mango, Vitamin-C Amla, Green Chilli, and Zesty Lemon.</p>
+          <span class="category-card-btn">View Price List & Order →</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- Filter & Search Bar -->
+  <div class="filter-bar">
+    <div class="search-input-wrapper">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="product-search-input" class="search-input" placeholder="Search by spice name (e.g. Bedgi, Kanda Lasun, Peanut)..." oninput="handleSearch()">
+    </div>
+    <div class="category-tabs">
+      <button class="tab-btn active" onclick="filterCatalog('all', this)">All Items</button>
+      <button class="tab-btn" onclick="filterCatalog('masalas', this)">🌶️ Masalas</button>
+      <button class="tab-btn" onclick="filterCatalog('chutneys', this)">🥜 Chutneys</button>
+      <button class="tab-btn" onclick="filterCatalog('pickles', this)">🥭 Pickles</button>
+    </div>
+  </div>
+
+  <!-- Dynamic Product Grid Loaded from SQL -->
+  <section>
+    <div class="section-header">
+      <h2 id="catalog-title">Our Hand-Crafted Catalog</h2>
+      <p id="catalog-subtitle">Directly loaded from our SQL Database in real time</p>
+    </div>
+
+    <div id="product-grid-container" class="product-grid">
+      <!-- Loading state / products populated via app.js -->
+      <div style="text-align: center; grid-column: 1 / -1; padding: 40px;">
+        <p style="font-size: 1.2rem; color: #666;">Loading authentic spices from SQL database...</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Sliding Cart Drawer -->
+<div id="cart-overlay" class="cart-overlay" onclick="toggleCartDrawer()"></div>
+<div id="cart-drawer" class="cart-drawer">
+  <div class="cart-drawer-header">
+    <h3>🛒 Your Spice Basket</h3>
+    <button class="close-drawer-btn" onclick="toggleCartDrawer()">&times;</button>
+  </div>
+  <div id="cart-items-container" class="cart-drawer-items"></div>
+  <div class="cart-drawer-footer">
+    <div class="cart-calc-row">
+      <span>Subtotal:</span>
+      <span id="cart-subtotal">₹0.00</span>
+    </div>
+    <div class="cart-calc-row">
+      <span>CGST (2.5%):</span>
+      <span id="cart-cgst">₹0.00</span>
+    </div>
+    <div class="cart-calc-row">
+      <span>SGST (2.5%):</span>
+      <span id="cart-sgst">₹0.00</span>
+    </div>
+    <div class="cart-calc-total">
+      <span>Total Amount:</span>
+      <span id="cart-total">₹0.00</span>
+    </div>
+    <button id="cart-checkout-btn" class="btn-checkout" onclick="openCheckoutModal()">
+      Proceed to Checkout →
+    </button>
+  </div>
+</div>
+
+<!-- Multi-Step Checkout Modal: Step 1 (Info) => Step 2 (Payment) => Bill -->
+<div id="checkout-modal" class="modal">
+  <div class="modal-content" style="max-width: 480px;">
+    
+    <!-- STEP 1: INFO -->
+    <div id="checkout-step-info">
+      <div class="modal-header">
+        <h2>📋 Step 1: Customer Details</h2>
+        <button class="close-modal-btn" onclick="closeCheckoutModal()">&times;</button>
+      </div>
+      <div class="form-group">
+        <label for="checkout-name">Your Full Name *</label>
+        <input type="text" id="checkout-name" class="form-control" placeholder="e.g. Lalit Kumar" required>
+      </div>
+      <div class="form-group">
+        <label for="checkout-phone">Mobile Phone Number *</label>
+        <input type="tel" id="checkout-phone" class="form-control" placeholder="10-digit mobile number" required pattern="[0-9]{10}">
+      </div>
+      <div class="form-group">
+        <label for="checkout-address">Delivery Address (Pune & Nationwide) *</label>
+        <textarea id="checkout-address" class="form-control" rows="2" placeholder="House/Flat No, Street, Hadapsar, Pune" required></textarea>
+      </div>
+      <button type="button" class="btn-confirm-order" onclick="goToCheckoutStep('payment')">
+        Proceed to Payment ➔
+      </button>
+    </div>
+
+    <!-- STEP 2: PAYMENT -->
+    <div id="checkout-step-payment" style="display: none;">
+      <div class="modal-header">
+        <h2>💳 Step 2: Payment Method</h2>
+        <button class="close-modal-btn" onclick="closeCheckoutModal()">&times;</button>
+      </div>
+      
+      <div id="payment-summary-display" class="checkout-summary-box"></div>
+
+      <div class="form-group">
+        <label><b>Select Payment Method:</b></label>
+        <div style="margin: 8px 0; display:flex; flex-direction:column; gap:8px;">
+          <label style="display:flex; align-items:center; gap:8px; cursor:pointer; background:#f9f9f9; padding:10px 12px; border-radius:6px; border:1px solid #ddd;">
+            <input type="radio" name="paymentMethod" value="Cash on Delivery" checked onchange="togglePaymentMethodDetails('COD')">
+            <span>💵 <b>Cash on Delivery (COD)</b> (Pay cash or UPI upon delivery)</span>
+          </label>
+          <label style="display:flex; align-items:center; gap:8px; cursor:pointer; background:#f9f9f9; padding:10px 12px; border-radius:6px; border:1px solid #ddd;">
+            <input type="radio" name="paymentMethod" value="UPI" onchange="togglePaymentMethodDetails('UPI')">
+            <span>⚡ <b>Instant UPI / QR Code</b> (Scan with GPay, PhonePe, Paytm)</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- UPI QR Code display box -->
+      <div id="upi-qr-box" style="display:none; text-align:center; background:#fdf5eb; border:1px dashed #d35400; padding:12px; border-radius:8px; margin-bottom:15px;">
+        <p style="font-size:0.85rem; font-weight:bold; color:#b75304; margin-bottom:6px;">Scan & Pay via UPI</p>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=upi://pay?pa=luckytraders@upi&pn=LuckyTraders" alt="UPI QR Code" style="border:1px solid #ccc; border-radius:6px; background:white; padding:4px;">
+        <p style="font-size:0.8rem; margin-top:5px; color:#555;">UPI ID: <b>luckytraders@upi</b></p>
+      </div>
+
+      <div style="display:flex; gap:10px;">
+        <button type="button" class="btn-home" style="flex:1;" onclick="goToCheckoutStep('info')">
+          ← Back
+        </button>
+        <button type="button" id="submit-order-btn" class="btn-confirm-order" style="flex:2;" onclick="submitOrder()">
+          Confirm & View Bill 🧾
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <p><b>Lucky Traders</b> • GSTIN: 31AKAKA0520A0K1</p>
+  <p>Shop No. 4, Main Bazar, Hadapsar, Pune, Maharashtra - 411002</p>
+  <p style="margin-top: 8px; font-size: 0.8rem;">
+    Powered by Python Flask & SQLite Relational Database • 
+    <a href="admin.html">Admin Dashboard</a> • 
+    <a href="login.html">Account Login</a>
+  </p>
+</footer>
+
+<script src="app.js"></script>
+<script>
+  let allProducts = [];
+  let currentCategory = 'all';
+
+  async function loadCatalog() {
+    try {
+      const res = await fetch(`${API_BASE}/products`);
+      const data = await res.json();
+      if (data.success) {
+        allProducts = data.products;
+        renderProducts(allProducts);
+      }
+    } catch (err) {
+      document.getElementById('product-grid-container').innerHTML = `
+        <div style="grid-column: 1 / -1; text-align: center; color: #c0392b; padding: 30px;">
+          <p style="font-size: 1.5rem;">⚠️</p>
+          <p><b>Unable to connect to Lucky Traders Python Backend (${API_BASE})</b></p>
+          <p style="font-size: 0.85rem; color: #666; margin-top: 6px;">Ensure <code>python app.py</code> is running and visit <a href="http://localhost:5000">http://localhost:5000</a>.</p>
+        </div>
+      `;
+    }
+  }
+
+  function renderProducts(products) {
+    const container = document.getElementById('product-grid-container');
+    if (!container) return;
+
+    if (products.length === 0) {
+      container.innerHTML = `
+        <div style="grid-column: 1 / -1; text-align: center; padding: 40px;">
+          <p style="font-size: 2rem;">🔍</p>
+          <p>No products found matching your search.</p>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = products.map(prod => `
+      <div class="product-card" id="prod-card-${prod.id}">
+        <div class="product-img-box">
+          <img src="${prod.image_url}" alt="${prod.name}" onerror="this.src='https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80'">
+          ${prod.is_featured ? '<span class="badge-featured">⭐ Best Seller</span>' : ''}
+          ${prod.stock_qty <= 0 ? '<span style="position:absolute; bottom:8px; left:8px; background:#e74c3c; color:white; font-size:0.75rem; padding:2px 6px; border-radius:4px; font-weight:bold;">Out of Stock</span>' : ''}
+        </div>
+        <div class="product-info">
+          <h3 class="product-title" style="color:#c0392b; font-size:1.2rem; margin-bottom:2px;">${prod.marathi_name || prod.name}</h3>
+          <div class="product-english-sub" style="font-size:0.85rem; color:#555; font-weight:600; margin-bottom:6px;">${prod.name}</div>
+          <p class="product-desc">${prod.description || ''}</p>
+          
+          <div class="weight-selector" data-prod-id="${prod.id}">
+            <button type="button" class="weight-option selected" onclick="selectWeight(${prod.id}, '1 Kg', ${prod.price_1kg}, this)">1 Kg</button>
+            <button type="button" class="weight-option" onclick="selectWeight(${prod.id}, '250 Gm', ${prod.price_250g}, this)">250 Gm</button>
+          </div>
+
+          <div class="product-price-box">
+            <span class="product-price" id="price-display-${prod.id}">₹${prod.price_1kg}</span>
+            <span class="product-price-sub" id="weight-label-${prod.id}">per 1 Kg</span>
+          </div>
+
+          <div class="card-actions">
+            <button class="btn-add-cart" onclick="addSelectedToCart(${prod.id})">🛒 Add to Basket</button>
+            <button class="btn-buy-now" onclick="buySelectedNow(${prod.id})">Buy Now</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  const selectedWeights = {};
+
+  function selectWeight(prodId, weight, price, btn) {
+    selectedWeights[prodId] = { weight, price };
+    const parent = btn.parentElement;
+    parent.querySelectorAll('.weight-option').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+
+    document.getElementById(`price-display-${prodId}`).textContent = `₹${price}`;
+    document.getElementById(`weight-label-${prodId}`).textContent = `per ${weight}`;
+  }
+
+  function addSelectedToCart(prodId) {
+    const product = allProducts.find(p => p.id === prodId);
+    if (!product) return;
+    const selection = selectedWeights[prodId] || { weight: '1 Kg', price: product.price_1kg };
+    Cart.addItem(product, selection.weight, 1);
+  }
+
+  function buySelectedNow(prodId) {
+    const product = allProducts.find(p => p.id === prodId);
+    if (!product) return;
+    const selection = selectedWeights[prodId] || { weight: '1 Kg', price: product.price_1kg };
+    quickBuy(product.id, product.name, product.price_1kg, product.price_250g, selection.weight, product.image_url, product.marathi_name);
+  }
+
+
+  function filterCatalog(categorySlug, tabBtn) {
+    currentCategory = categorySlug;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    if (tabBtn) tabBtn.classList.add('active');
+
+    let filtered = allProducts;
+    if (categorySlug !== 'all') {
+      filtered = filtered.filter(p => p.category_slug === categorySlug);
+    }
+    renderProducts(filtered);
+  }
+
+  function handleSearch() {
+    const term = document.getElementById('product-search-input').value.toLowerCase().trim();
+    let filtered = allProducts;
+    if (currentCategory !== 'all') {
+      filtered = filtered.filter(p => p.category_slug === currentCategory);
+    }
+    if (term) {
+      filtered = filtered.filter(p => 
+        p.name.toLowerCase().includes(term) ||
+        (p.marathi_name && p.marathi_name.toLowerCase().includes(term)) ||
+        (p.description && p.description.toLowerCase().includes(term))
+      );
+    }
+    renderProducts(filtered);
+  }
+
+  document.addEventListener('DOMContentLoaded', loadCatalog);
+</script>
+</body>
+</html>

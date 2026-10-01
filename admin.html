@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Lucky Traders</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="with-bg">
+
+<!-- Header & Navigation -->
+<header>
+  <nav class="navbar" style="background: #112d42;">
+    <a href="index.html" class="nav-brand">
+      <h1>🌶️ Lucky Traders</h1>
+      <span class="subtitle" style="background:#27ae60; color:white;">ADMIN PORTAL</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">🏪 Storefront</a></li>
+      <li><a href="admin.html" class="active">📊 Admin Operations</a></li>
+    </ul>
+    <div class="nav-right">
+      <div id="user-nav-container" class="user-nav">
+        <a href="javascript:void(0)" onclick="Auth.logout()" class="nav-logout-btn">Logout</a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main class="container">
+  
+  <!-- KPI Metrics Banner -->
+  <div class="admin-stats-grid">
+    <div class="stat-card">
+      <div class="stat-card-label">Total Revenue</div>
+      <div class="stat-card-num" id="stat-revenue" style="color: #27ae60;">₹0</div>
+      <span style="font-size:0.8rem; color:#888;">Recorded in SQL</span>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-label">Total Orders</div>
+      <div class="stat-card-num" id="stat-orders">0</div>
+      <span style="font-size:0.8rem; color:#888;">Completed & Active</span>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-label">Registered Customers</div>
+      <div class="stat-card-num" id="stat-customers" style="color: #2980b9;">0</div>
+      <span style="font-size:0.8rem; color:#888;">Customer Accounts</span>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-label">Available Products</div>
+      <div class="stat-card-num" id="stat-products">0</div>
+      <span style="font-size:0.8rem; color:#888;">Catalog Items</span>
+    </div>
+  </div>
+
+  <!-- Admin Sub-Navigation Tabs matching User Requirements -->
+  <div class="admin-subnav">
+    <button type="button" class="admin-tab-btn active" id="tab-btn-categories" onclick="showAdminSection('categories')">
+      📁 Categories (Add & Remove)
+    </button>
+    <button type="button" class="admin-tab-btn" id="tab-btn-customers" onclick="showAdminSection('customers')">
+      👥 Customer Data
+    </button>
+    <button type="button" class="admin-tab-btn" id="tab-btn-orders" onclick="showAdminSection('orders')">
+      📦 Order Data
+    </button>
+    <button type="button" class="admin-tab-btn" id="tab-btn-stock" onclick="showAdminSection('stock')">
+      📊 Avail. Stock & Products
+    </button>
+  </div>
+
+  <!-- ========================================================
+       SECTION 1: CATEGORIES (Add & Remove)
+       ======================================================== -->
+  <section id="section-categories" class="admin-section active">
+    <div class="section-header" style="text-align: left; margin-bottom: 15px;">
+      <h2>📁 Category Management</h2>
+      <p>Add new spice categories or remove existing categories directly in the SQL database.</p>
+    </div>
+
+    <!-- Add Category Form -->
+    <div class="admin-form-card">
+      <h3 style="margin-bottom: 15px; color: var(--primary-color);">➕ Add New Category</h3>
+      <form onsubmit="handleAddCategory(event)">
+        <div class="admin-form-grid">
+          <div>
+            <label style="font-size:0.85rem; font-weight:600;">Category Name *</label>
+            <input type="text" id="cat-name" class="form-control" placeholder="e.g. Papad & Fryums" required>
+          </div>
+          <div>
+            <label style="font-size:0.85rem; font-weight:600;">Category Slug (URL) *</label>
+            <input type="text" id="cat-slug" class="form-control" placeholder="e.g. papad" required>
+          </div>
+          <div>
+            <label style="font-size:0.85rem; font-weight:600;">Icon Emoji</label>
+            <input type="text" id="cat-icon" class="form-control" placeholder="e.g. 🍘" value="🍲">
+          </div>
+          <div style="grid-column: 1 / -1;">
+            <label style="font-size:0.85rem; font-weight:600;">Description</label>
+            <input type="text" id="cat-desc" class="form-control" placeholder="Brief description of products in this category">
+          </div>
+        </div>
+        <button type="submit" id="btn-add-cat" class="btn-confirm-order" style="width: auto; padding: 10px 24px; margin-top: 15px;">
+          ➕ Add Category to SQL
+        </button>
+      </form>
+    </div>
+
+    <!-- Categories List Table -->
+    <div class="table-container">
+      <table class="spice-table">
+        <caption>Current Categories in SQL</caption>
+        <thead>
+          <tr>
+            <th>Icon & Name</th>
+            <th>Slug</th>
+            <th>Description</th>
+            <th>Product Count</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="categories-table-tbody">
+          <tr><td colspan="5" style="text-align:center; padding: 20px;">Loading categories from SQL...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       SECTION 2: CUSTOMER DATA
+       ======================================================== -->
+  <section id="section-customers" class="admin-section">
+    <div class="section-header" style="text-align: left; margin-bottom: 15px;">
+      <h2>👥 Registered Customer Database</h2>
+      <p>View customer accounts, contact numbers, delivery addresses, order counts, and lifetime spends.</p>
+    </div>
+
+    <div class="table-container">
+      <table class="spice-table">
+        <caption>Customer Accounts (users table where role = 'customer')</caption>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Full Name</th>
+            <th>Username</th>
+            <th>Contact Phone</th>
+            <th>Delivery Address</th>
+            <th>Joined Date</th>
+            <th>Total Orders</th>
+            <th>Total Spent</th>
+          </tr>
+        </thead>
+        <tbody id="customers-table-tbody">
+          <tr><td colspan="8" style="text-align:center; padding: 20px;">Loading customer data from SQL...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       SECTION 3: ORDER DATA
+       ======================================================== -->
+  <section id="section-orders" class="admin-section">
+    <div class="section-header" style="text-align: left; margin-bottom: 15px;">
+      <h2>📦 Order Data & Fulfillment</h2>
+      <p>Real-time customer orders, line-item breakdowns, status tracking, and dynamic receipts.</p>
+    </div>
+
+    <div class="table-container">
+      <table class="spice-table">
+        <caption>Orders Table (SQL Transactions)</caption>
+        <thead>
+          <tr>
+            <th>Order #</th>
+            <th>Date</th>
+            <th>Customer Info</th>
+            <th>Items Breakdown</th>
+            <th>Total Amount</th>
+            <th>Payment</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="orders-table-tbody">
+          <tr><td colspan="8" style="text-align:center; padding: 20px;">Loading orders from SQL...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       SECTION 4: AVAIL. STOCK & PRODUCT MANAGEMENT
+       ======================================================== -->
+  <section id="section-stock" class="admin-section">
+    <div class="section-header" style="text-align: left; margin-bottom: 15px;">
+      <h2>📊 Available Stock & Inventory Management</h2>
+      <p>Monitor available stock quantity (`stock_qty`), update stock levels, and add or remove products.</p>
+    </div>
+
+    <!-- Add Product Form -->
+    <div class="admin-form-card">
+      <h3 style="margin-bottom: 15px; color: var(--primary-color);">➕ Add New Product to Inventory</h3>
+      <form onsubmit="handleAddProduct(event)">
+        <div class="admin-form-grid">
+          <div>
+            <label style="font-size:0.85rem; font-weight:600;">Category *</label>
+            <select id="prod-category" class="form-control" required></select>
+          </div>
+          <div>
+            <label style="font-size:0.85rem; font-weight:600;">Product Name *</label>
+            <input type="text" id="prod-name" class="form-control" placeholder="e.g. Sambar Masala" required>
+          </div>
+          <div>
+            <label style="font-size:0.85rem; font-weight:600;">Marathi Name</label>
+            <input type="text" id="prod-marathi" class="form-control" placeholder="e.g. सांबार मसाला">
+          </div>
+          <div>
+            <label style="font-size:0.85rem; font-weight:600;">Price (1 Kg) *</label>
+            <input type="number" id="prod-p1kg" class="form-control" placeholder="500" step="1" required>
+          </div>
+          <div>
+            <label style="font-size:0.85rem; font-weight:600;">Price (250 Gm) *</label>
+            <input type="number" id="prod-p250g" class="form-control" placeholder="130" step="1" required>
+          </div>
+          <div>
+            <label style="font-size:0.85rem; font-weight:600;">Initial Stock Qty *</label>
+            <input type="number" id="prod-stock" class="form-control" value="50" min="0" required>
+          </div>
+          <div style="grid-column: 1 / -1;">
+            <label style="font-size:0.85rem; font-weight:600;">Description</label>
+            <input type="text" id="prod-desc" class="form-control" placeholder="Aromatic blend of roasted lentils and spices">
+          </div>
+        </div>
+        <button type="submit" id="btn-add-prod" class="btn-confirm-order" style="width: auto; padding: 10px 24px; margin-top: 15px;">
+          ➕ Save Product to SQL
+        </button>
+      </form>
+    </div>
+
+    <!-- Products & Stock Table -->
+    <div class="table-container">
+      <table class="spice-table">
+        <caption>Product Inventory & Available Stock in SQL</caption>
+        <thead>
+          <tr>
+            <th>Product Name</th>
+            <th>Category</th>
+            <th>Rate (1 Kg)</th>
+            <th>Rate (250 Gm)</th>
+            <th>Avail. Stock (Qty)</th>
+            <th>Stock Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="stock-table-tbody">
+          <tr><td colspan="7" style="text-align:center; padding: 20px;">Loading stock data from SQL...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p><b>Lucky Traders</b> • Hadapsar Pune, India • Admin Panel</p>
+</footer>
+
+<script src="app.js"></script>
+<script>
+  let adminCategories = [];
+  let adminProducts = [];
+  let adminOrders = [];
+  let adminCustomers = [];
+
+  function checkAdminAuth() {
+    const user = Auth.getUser();
+    if (!user || user.role !== 'admin') {
+      alert('Access restricted to Store Administrators. Redirecting to Admin Login.');
+      window.location.href = 'login.html';
+      return false;
+    }
+    return true;
+  }
+
+  function showAdminSection(secName) {
+    document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
+
+    const sec = document.getElementById(`section-${secName}`);
+    const tabBtn = document.getElementById(`tab-btn-${secName}`);
+
+    if (sec) sec.classList.add('active');
+    if (tabBtn) tabBtn.classList.add('active');
+  }
+
+  async function loadAllAdminData() {
+    if (!checkAdminAuth()) return;
+
+    try {
+      // 1. Stats
+      const statsRes = await fetch(`${API_BASE}/admin/stats`);
+      const statsData = await statsRes.json();
+      if (statsData.success) {
+        const s = statsData.stats;
+        document.getElementById('stat-revenue').textContent = `₹${s.totalSales}`;
+        document.getElementById('stat-orders').textContent = s.totalOrders;
+        document.getElementById('stat-customers').textContent = s.totalCustomers || 0;
+        document.getElementById('stat-products').textContent = s.totalProducts;
+      }
+
+      // 2. Categories
+      const catRes = await fetch(`${API_BASE}/categories`);
+      const catData = await catRes.json();
+      if (catData.success) {
+        adminCategories = catData.categories;
+        renderCategories(adminCategories);
+        populateCategoryDropdown(adminCategories);
+      }
+
+      // 3. Customers
+      const custRes = await fetch(`${API_BASE}/admin/customers`);
+      const custData = await custRes.json();
+      if (custData.success) {
+        adminCustomers = custData.customers;
+        renderCustomers(adminCustomers);
+      }
+
+      // 4. Orders
+      const ordRes = await fetch(`${API_BASE}/admin/orders`);
+      const ordData = await ordRes.json();
+      if (ordData.success) {
+        adminOrders = ordData.orders;
+        renderOrders(adminOrders);
+      }
+
+      // 5. Products & Available Stock
+      const prodRes = await fetch(`${API_BASE}/products`);
+      const prodData = await prodRes.json();
+      if (prodData.success) {
+        adminProducts = prodData.products;
+        renderStock(adminProducts);
+      }
+
+    } catch (err) {
+      console.error('Failed to load admin data:', err);
+    }
+  }
+
+  // --- Category Functions ---
+  function renderCategories(cats) {
+    const tbody = document.getElementById('categories-table-tbody');
+    tbody.innerHTML = cats.map(c => `
+      <tr>
+        <td><b>${c.icon || '🍲'} ${c.name}</b></td>
+        <td><code>${c.slug}</code></td>
+        <td style="font-size:0.85rem; color:#555;">${c.description || '-'}</td>
+        <td style="text-align:center;"><b>${c.product_count || 0}</b> items</td>
+        <td>
+          <button class="btn-remove" style="padding:4px 8px; border:1px solid #e74c3c; border-radius:4px; font-size:0.8rem;" onclick="handleDeleteCategory(${c.id}, '${c.name}')">
+            🗑️ Remove
+          </button>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  function populateCategoryDropdown(cats) {
+    const sel = document.getElementById('prod-category');
+    if (!sel) return;
+    sel.innerHTML = cats.map(c => `<option value="${c.id}">${c.icon || '🍲'} ${c.name}</option>`).join('');
+  }
+
+  async function handleAddCategory(e) {
+    e.preventDefault();
+    const name = document.getElementById('cat-name').value.trim();
+    const slug = document.getElementById('cat-slug').value.trim();
+    const icon = document.getElementById('cat-icon').value.trim() || '🍲';
+    const description = document.getElementById('cat-desc').value.trim();
+
+    try {
+      const res = await fetch(`${API_BASE}/admin/categories`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, slug, icon, description })
+      });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.error);
+
+      Cart.showToast(`Category "${name}" created in SQL!`);
+      document.getElementById('cat-name').value = '';
+      document.getElementById('cat-slug').value = '';
+      document.getElementById('cat-desc').value = '';
+      loadAllAdminData();
+    } catch (err) {
+      alert(`Error creating category: ${err.message}`);
+    }
+  }
+
+  async function handleDeleteCategory(id, name) {
+    if (!confirm(`Are you sure you want to remove the category "${name}"? All associated products will also be removed from SQL.`)) return;
+
+    try {
+      const res = await fetch(`${API_BASE}/admin/categories/${id}`, { method: 'DELETE' });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.error);
+
+      Cart.showToast(`Category "${name}" removed from SQL!`);
+      loadAllAdminData();
+    } catch (err) {
+      alert(`Error removing category: ${err.message}`);
+    }
+  }
+
+  // --- Customer Data Functions ---
+  function renderCustomers(customers) {
+    const tbody = document.getElementById('customers-table-tbody');
+    if (customers.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:20px;">No registered customer records yet.</td></tr>`;
+      return;
+    }
+    tbody.innerHTML = customers.map(cust => `
+      <tr>
+        <td>#${cust.id}</td>
+        <td><b>${cust.full_name}</b></td>
+        <td><code>${cust.username}</code></td>
+        <td>${cust.phone || '-'}</td>
+        <td style="font-size:0.85rem; color:#555;">${cust.address || '-'}</td>
+        <td style="font-size:0.85rem;">${new Date(cust.created_at).toLocaleDateString('en-IN')}</td>
+        <td style="text-align:center; font-weight:bold;">${cust.total_orders}</td>
+        <td style="font-weight:bold; color:#27ae60;">₹${cust.total_spent}</td>
+      </tr>
+    `).join('');
+  }
+
+  // --- Order Data Functions ---
+  function renderOrders(orders) {
+    const tbody = document.getElementById('orders-table-tbody');
+    if (orders.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding: 20px;">No orders recorded yet.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = orders.map(ord => {
+      const itemsHtml = (ord.items || []).map(i => `• ${i.product_name} (${i.weight}) x${i.quantity}`).join('<br>');
+      const dateStr = new Date(ord.created_at).toLocaleDateString('en-IN');
+
+      return `
+        <tr>
+          <td><b>${ord.order_number}</b></td>
+          <td>${dateStr}</td>
+          <td>
+            <b>${ord.customer_name}</b><br>
+            <span style="font-size:0.8rem; color:#555;">📞 ${ord.customer_phone}</span><br>
+            <span style="font-size:0.75rem; color:#777;">📍 ${ord.customer_address}</span>
+          </td>
+          <td style="font-size:0.85rem;">${itemsHtml}</td>
+          <td style="font-weight:bold; color:#c0392b;">₹${ord.total_amount}</td>
+          <td><span style="font-size:0.8rem;">${ord.payment_method}</span></td>
+          <td>
+            <select class="form-control" style="padding:4px 8px; font-size:0.8rem; width:auto;" onchange="updateOrderStatus(${ord.id}, this.value)">
+              ${['Pending', 'Confirmed', 'Processing', 'Dispatched', 'Delivered', 'Cancelled'].map(st => `
+                <option value="${st}" ${ord.status === st ? 'selected' : ''}>${st}</option>
+              `).join('')}
+            </select>
+          </td>
+          <td>
+            <a href="receipt.html?order=${encodeURIComponent(ord.order_number)}" target="_blank" class="btn-sm-order" style="text-decoration:none; display:inline-block;">
+              🧾 View Bill
+            </a>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  async function updateOrderStatus(orderId, newStatus) {
+    try {
+      const res = await fetch(`${API_BASE}/admin/orders/${orderId}/status`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus })
+      });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.error);
+
+      Cart.showToast(`Order status updated to "${newStatus}"!`);
+      loadAllAdminData();
+    } catch (err) {
+      alert(`Status update failed: ${err.message}`);
+    }
+  }
+
+  // --- Available Stock & Product Functions ---
+  function renderStock(products) {
+    const tbody = document.getElementById('stock-table-tbody');
+    tbody.innerHTML = products.map(prod => `
+      <tr>
+        <td>
+          <b>${prod.name}</b><br>
+          <span style="font-size:0.8rem; color:#888;">${prod.marathi_name || ''}</span>
+        </td>
+        <td><span class="badge-weight">${prod.category_name}</span></td>
+        <td class="price-tag">₹${prod.price_1kg}</td>
+        <td class="price-tag">₹${prod.price_250g}</td>
+        <td>
+          <input type="number" id="stock-input-${prod.id}" value="${prod.stock_qty || 0}" min="0" style="width:70px; padding:4px; font-weight:bold; text-align:center;">
+        </td>
+        <td>
+          ${(prod.stock_qty > 0)
+            ? '<span class="badge-status badge-Delivered">In Stock</span>'
+            : '<span class="badge-status badge-Cancelled">Out of Stock</span>'
+          }
+        </td>
+        <td>
+          <div class="table-action-btns">
+            <button class="btn-sm-order" style="background:#27ae60;" onclick="handleSaveStock(${prod.id})">💾 Save</button>
+            <button class="btn-remove" style="padding:4px 8px; border:1px solid #e74c3c; border-radius:4px; font-size:0.8rem;" onclick="handleDeleteProduct(${prod.id}, '${prod.name}')">🗑️ Delete</button>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  async function handleSaveStock(prodId) {
+    const newQty = parseInt(document.getElementById(`stock-input-${prodId}`).value, 10);
+    if (isNaN(newQty) || newQty < 0) {
+      alert('Please enter a valid stock quantity.');
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API_BASE}/admin/products/${prodId}/stock`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ stockQty: newQty })
+      });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.error);
+
+      Cart.showToast('Stock quantity updated in SQL!');
+      loadAllAdminData();
+    } catch (err) {
+      alert(`Error updating stock: ${err.message}`);
+    }
+  }
+
+  async function handleAddProduct(e) {
+    e.preventDefault();
+    const categoryId = document.getElementById('prod-category').value;
+    const name = document.getElementById('prod-name').value.trim();
+    const marathiName = document.getElementById('prod-marathi').value.trim();
+    const price1kg = parseFloat(document.getElementById('prod-p1kg').value);
+    const price250g = parseFloat(document.getElementById('prod-p250g').value);
+    const stockQty = parseInt(document.getElementById('prod-stock').value, 10);
+    const description = document.getElementById('prod-desc').value.trim();
+
+    try {
+      const res = await fetch(`${API_BASE}/admin/products`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          categoryId,
+          name,
+          marathiName,
+          price1kg,
+          price250g,
+          stockQty,
+          description
+        })
+      });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.error);
+
+      Cart.showToast(`Product "${name}" added to SQL catalog!`);
+      document.getElementById('prod-name').value = '';
+      document.getElementById('prod-marathi').value = '';
+      document.getElementById('prod-p1kg').value = '';
+      document.getElementById('prod-p250g').value = '';
+      document.getElementById('prod-desc').value = '';
+      loadAllAdminData();
+    } catch (err) {
+      alert(`Error adding product: ${err.message}`);
+    }
+  }
+
+  async function handleDeleteProduct(id, name) {
+    if (!confirm(`Are you sure you want to remove product "${name}" from store?`)) return;
+
+    try {
+      const res = await fetch(`${API_BASE}/admin/products/${id}`, { method: 'DELETE' });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.error);
+
+      Cart.showToast(`Product "${name}" removed from SQL!`);
+      loadAllAdminData();
+    } catch (err) {
+      alert(`Error deleting product: ${err.message}`);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', loadAllAdminData);
+</script>
+</body>
+</html>
