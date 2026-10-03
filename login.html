@@ -5,36 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login & Access Portal - Lucky Traders</title>
   <link rel="stylesheet" href="style.css">
-  <style>
-    .auth-tab-btn {
-      font-size: 0.95rem;
-      padding: 12px 8px;
-    }
-    .admin-tab.active {
-      color: #16a085;
-      border-bottom-color: #16a085;
-    }
-    .user-tab.active {
-      color: #c0392b;
-      border-bottom-color: #c0392b;
-    }
-    .auth-box-banner {
-      padding: 10px;
-      border-radius: 6px;
-      font-size: 0.85rem;
-      margin-bottom: 15px;
-    }
-    .banner-user {
-      background: #fdf5eb;
-      color: #b75304;
-      border: 1px solid #fed7aa;
-    }
-    .banner-admin {
-      background: #e8f8f5;
-      color: #117a65;
-      border: 1px solid #a3e4d7;
-    }
-  </style>
 </head>
 <body class="with-bg">
 
@@ -58,16 +28,16 @@
 </header>
 
 <div class="auth-wrapper">
-  <div class="auth-card" style="max-width: 460px; width: 100%;">
+  <div class="auth-card">
     <h2>🌶️ Lucky Traders Portal</h2>
-    <p style="color: #666; font-size: 0.9rem;">Select your access role to continue</p>
+    <p style="color: #666; font-size: 0.9rem;">Select your role to login or register</p>
 
     <!-- 3 Distinct Role Tabs -->
     <div class="auth-tabs">
-      <button type="button" id="tab-user" class="auth-tab-btn user-tab active" onclick="switchRole('user')">
+      <button type="button" id="tab-user" class="auth-tab-btn active" onclick="switchRole('user')">
         👤 User Login
       </button>
-      <button type="button" id="tab-admin" class="auth-tab-btn admin-tab" onclick="switchRole('admin')">
+      <button type="button" id="tab-admin" class="auth-tab-btn" onclick="switchRole('admin')">
         🛡️ Admin Login
       </button>
       <button type="button" id="tab-reg" class="auth-tab-btn" onclick="switchRole('register')">
@@ -75,89 +45,74 @@
       </button>
     </div>
 
-    <!-- In-page Message Box -->
-    <div id="auth-status-msg" style="display:none; padding:12px; margin-bottom:15px; border-radius:6px; font-size:0.9rem; text-align:left;"></div>
+    <!-- Status Message Alert Box -->
+    <div id="auth-status-msg" style="display:none; padding:10px; margin-bottom:14px; border-radius:4px; font-size:0.88rem; text-align:left;"></div>
 
-    <!-- 1. USER LOGIN FORM -->
+    <!-- 1. CUSTOMER / USER LOGIN FORM -->
     <div id="section-user">
-      <div class="auth-box-banner banner-user">
-        🛒 <b>Customer Access:</b> Browse catalog, manage cart, place orders, and view your tax bills.
-      </div>
       <form onsubmit="handleUserLogin(event)">
         <div class="form-group" style="text-align: left;">
-          <label for="user-username">Customer Username</label>
+          <label>Customer Username</label>
           <input type="text" id="user-username" class="form-control" placeholder="Enter username" value="lalit" required>
         </div>
         <div class="form-group" style="text-align: left;">
-          <label for="user-password">Password</label>
+          <label>Password</label>
           <input type="password" id="user-password" class="form-control" placeholder="Enter password" value="lalit123" required>
         </div>
-        <button type="submit" id="btn-user-submit" class="auth-submit-btn" style="background:#c0392b;">
+        <button type="submit" id="btn-user-submit" class="auth-submit-btn" style="background:var(--accent-spice);">
           Login as Customer ➔
         </button>
       </form>
       <div class="demo-accounts-box">
-        <b>💡 User Demo:</b> Username: <code>lalit</code> | Password: <code>lalit123</code>
-        <div style="margin-top:6px;">
-          <button type="button" class="btn-sm-order" style="background:#c0392b;" onclick="fillUserCreds('lalit', 'lalit123')">Autofill Customer</button>
-        </div>
+        <b>💡 Customer Demo:</b> Username: <code>lalit</code> | Password: <code>lalit123</code>
       </div>
     </div>
 
     <!-- 2. ADMIN LOGIN FORM -->
     <div id="section-admin" style="display: none;">
-      <div class="auth-box-banner banner-admin">
-        🛡️ <b>Store Administrator:</b> Manage categories, view customers, process orders, and control stock.
-      </div>
       <form onsubmit="handleAdminLogin(event)">
         <div class="form-group" style="text-align: left;">
-          <label for="admin-username">Admin Username</label>
+          <label>Admin Username</label>
           <input type="text" id="admin-username" class="form-control" placeholder="Admin username" value="admin" required>
         </div>
         <div class="form-group" style="text-align: left;">
-          <label for="admin-password">Admin Password</label>
+          <label>Admin Password</label>
           <input type="password" id="admin-password" class="form-control" placeholder="Admin password" value="admin123" required>
         </div>
         <button type="submit" id="btn-admin-submit" class="auth-submit-btn" style="background:#16a085;">
-          Login to Admin Dashboard ➔
+          Login to Admin Portal ➔
         </button>
       </form>
       <div class="demo-accounts-box">
         <b>💡 Admin Demo:</b> Username: <code>admin</code> | Password: <code>admin123</code>
-        <div style="margin-top:6px;">
-          <button type="button" class="btn-sm-order" style="background:#16a085;" onclick="fillAdminCreds('admin', 'admin123')">Autofill Admin</button>
-        </div>
       </div>
     </div>
 
-    <!-- 3. USER REGISTRATION FORM -->
+    <!-- 3. CUSTOMER REGISTRATION FORM -->
     <div id="section-register" style="display: none;">
-      <div class="auth-box-banner banner-user">
-        ✨ Create your new Lucky Traders customer account for quick order checkout!
-      </div>
       <form onsubmit="handleRegister(event)">
         <div class="form-group" style="text-align: left;">
-          <label for="reg-fullname">Full Name *</label>
+          <label>Full Name *</label>
           <input type="text" id="reg-fullname" class="form-control" placeholder="e.g. Anand Deshmukh" required>
         </div>
         <div class="form-group" style="text-align: left;">
-          <label for="reg-username">Choose Username *</label>
-          <input type="text" id="reg-username" class="form-control" placeholder="Username" required>
+          <label>Username *</label>
+          <input type="text" id="reg-username" class="form-control" placeholder="Choose username" required>
         </div>
         <div class="form-group" style="text-align: left;">
-          <label for="reg-password">Password *</label>
-          <input type="password" id="reg-password" class="form-control" placeholder="Password" required>
+          <label>Password *</label>
+          <input type="password" id="reg-password" class="form-control" placeholder="Choose password" required>
         </div>
         <div class="form-group" style="text-align: left;">
-          <label for="reg-phone">Phone Number *</label>
-          <input type="tel" id="reg-phone" class="form-control" placeholder="10-digit mobile number" required pattern="[0-9]{10}">
+          <label>Phone Number *</label>
+          <input type="tel" id="reg-phone" class="form-control" placeholder="10-digit mobile" required pattern="[0-9]{10}">
         </div>
         <div class="form-group" style="text-align: left;">
-          <label for="reg-address">Delivery Address (Pune) *</label>
-          <textarea id="reg-address" class="form-control" rows="2" placeholder="Full street address in Pune" required></textarea>
+          <label>Delivery Address *</label>
+          <textarea id="reg-address" class="form-control" rows="2" placeholder="Street address in Pune" required></textarea>
         </div>
         <button type="submit" id="btn-reg-submit" class="auth-submit-btn">
-          Create SQL Customer Account
+          Create Customer Account
         </button>
       </form>
     </div>
@@ -166,7 +121,7 @@
 </div>
 
 <footer>
-  <p><b>Lucky Traders</b> • Hadapsar Pune, India • GSTIN: 31AKAKA0520A0K1</p>
+  <p><b>Lucky Traders</b> • Hadapsar Pune • GSTIN: 31AKAKA0520A0K1</p>
 </footer>
 
 <script src="app.js"></script>
@@ -175,76 +130,26 @@
     const box = document.getElementById('auth-status-msg');
     if (!box) return;
     box.style.display = 'block';
-    if (isError) {
-      box.style.background = '#fdecea';
-      box.style.color = '#c0392b';
-      box.style.border = '1px solid #f5c6cb';
-      box.innerHTML = `⚠️ <b>Error:</b> ${text}`;
-    } else {
-      box.style.background = '#e8f8f5';
-      box.style.color = '#16a085';
-      box.style.border = '1px solid #a3e4d7';
-      box.innerHTML = `✅ <b>Success:</b> ${text}`;
-    }
-  }
-
-  function clearStatusMsg() {
-    const box = document.getElementById('auth-status-msg');
-    if (box) box.style.display = 'none';
+    box.style.background = isError ? '#fdecea' : '#e8f8f5';
+    box.style.color = isError ? '#c0392b' : '#16a085';
+    box.style.border = `1px solid ${isError ? '#f5c6cb' : '#a3e4d7'}`;
+    box.innerHTML = `${isError ? '⚠️' : '✅'} ${text}`;
   }
 
   function switchRole(role) {
-    clearStatusMsg();
-    const secUser = document.getElementById('section-user');
-    const secAdmin = document.getElementById('section-admin');
-    const secReg = document.getElementById('section-register');
+    document.getElementById('auth-status-msg').style.display = 'none';
+    document.getElementById('section-user').style.display = role === 'user' ? 'block' : 'none';
+    document.getElementById('section-admin').style.display = role === 'admin' ? 'block' : 'none';
+    document.getElementById('section-register').style.display = role === 'register' ? 'block' : 'none';
 
-    const tabUser = document.getElementById('tab-user');
-    const tabAdmin = document.getElementById('tab-admin');
-    const tabReg = document.getElementById('tab-reg');
-
-    secUser.style.display = 'none';
-    secAdmin.style.display = 'none';
-    secReg.style.display = 'none';
-
-    tabUser.classList.remove('active');
-    tabAdmin.classList.remove('active');
-    tabReg.classList.remove('active');
-
-    if (role === 'user') {
-      secUser.style.display = 'block';
-      tabUser.classList.add('active');
-    } else if (role === 'admin') {
-      secAdmin.style.display = 'block';
-      tabAdmin.classList.add('active');
-    } else {
-      secReg.style.display = 'block';
-      tabReg.classList.add('active');
-    }
+    document.getElementById('tab-user').classList.toggle('active', role === 'user');
+    document.getElementById('tab-admin').classList.toggle('active', role === 'admin');
+    document.getElementById('tab-reg').classList.toggle('active', role === 'register');
   }
 
-  function fillUserCreds(u, p) {
-    clearStatusMsg();
-    document.getElementById('user-username').value = u;
-    document.getElementById('user-password').value = p;
-  }
-
-  function fillAdminCreds(u, p) {
-    clearStatusMsg();
-    document.getElementById('admin-username').value = u;
-    document.getElementById('admin-password').value = p;
-  }
-
-  function formatErrorMessage(err) {
-    if (err.message && (err.message.includes('Failed to fetch') || err.message.includes('NetworkError'))) {
-      return `Cannot reach server (${API_BASE}). Please open <a href="http://localhost:5000/login.html" style="color:#c0392b; font-weight:bold; text-decoration:underline;">http://localhost:5000/login.html</a> in your browser.`;
-    }
-    return err.message || 'Operation failed';
-  }
-
+  // 1. Customer Login Request
   async function handleUserLogin(e) {
     e.preventDefault();
-    clearStatusMsg();
     const btn = document.getElementById('btn-user-submit');
     btn.disabled = true;
     btn.textContent = 'Verifying in SQL...';
@@ -259,23 +164,21 @@
         body: JSON.stringify({ username, password })
       });
       const data = await res.json();
-      if (!data.success) throw new Error(data.error || 'Invalid credentials');
+      if (!data.success) throw new Error(data.error || 'Invalid username or password');
 
-      showStatusMsg(`Welcome back, ${data.user.full_name}! Redirecting to store...`, false);
+      showStatusMsg(`Welcome back, ${data.user.full_name}!`, false);
       Auth.setUser(data.user);
-      setTimeout(() => {
-        window.location.href = 'index.html';
-      }, 700);
+      setTimeout(() => window.location.href = 'index.html', 700);
     } catch (err) {
-      showStatusMsg(formatErrorMessage(err), true);
+      showStatusMsg(err.message, true);
       btn.disabled = false;
       btn.textContent = 'Login as Customer ➔';
     }
   }
 
+  // 2. Admin Login Request
   async function handleAdminLogin(e) {
     e.preventDefault();
-    clearStatusMsg();
     const btn = document.getElementById('btn-admin-submit');
     btn.disabled = true;
     btn.textContent = 'Verifying in SQL...';
@@ -290,30 +193,25 @@
         body: JSON.stringify({ username, password })
       });
       const data = await res.json();
-      if (!data.success) throw new Error(data.error || 'Invalid credentials');
+      if (!data.success) throw new Error(data.error || 'Invalid admin credentials');
+      if (data.user.role !== 'admin') throw new Error('Not an administrator account.');
 
-      if (data.user.role !== 'admin') {
-        throw new Error('This account does not have Admin privileges. Please use the User Login tab.');
-      }
-
-      showStatusMsg(`Admin authentication verified! Loading dashboard...`, false);
+      showStatusMsg('Admin verified! Opening operations portal...', false);
       Auth.setUser(data.user);
-      setTimeout(() => {
-        window.location.href = 'admin.html';
-      }, 700);
+      setTimeout(() => window.location.href = 'admin.html', 700);
     } catch (err) {
-      showStatusMsg(formatErrorMessage(err), true);
+      showStatusMsg(err.message, true);
       btn.disabled = false;
-      btn.textContent = 'Login to Admin Dashboard ➔';
+      btn.textContent = 'Login to Admin Portal ➔';
     }
   }
 
+  // 3. Customer Registration Request
   async function handleRegister(e) {
     e.preventDefault();
-    clearStatusMsg();
     const btn = document.getElementById('btn-reg-submit');
     btn.disabled = true;
-    btn.textContent = 'Creating Account in SQL...';
+    btn.textContent = 'Saving to SQL...';
 
     const fullName = document.getElementById('reg-fullname').value.trim();
     const username = document.getElementById('reg-username').value.trim();
@@ -328,18 +226,15 @@
         body: JSON.stringify({ fullName, username, password, phone, address })
       });
       const data = await res.json();
-
       if (!data.success) throw new Error(data.error || 'Registration failed');
 
-      showStatusMsg(`Account created successfully for ${data.user.full_name}! Logging you in...`, false);
+      showStatusMsg(`Account created for ${data.user.full_name}! Logging in...`, false);
       Auth.setUser(data.user);
-      setTimeout(() => {
-        window.location.href = 'index.html';
-      }, 1000);
+      setTimeout(() => window.location.href = 'index.html', 800);
     } catch (err) {
-      showStatusMsg(formatErrorMessage(err), true);
+      showStatusMsg(err.message, true);
       btn.disabled = false;
-      btn.textContent = 'Create SQL Customer Account';
+      btn.textContent = 'Create Customer Account';
     }
   }
 </script>

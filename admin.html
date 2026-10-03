@@ -53,7 +53,7 @@
     </div>
   </div>
 
-  <!-- Admin Sub-Navigation Tabs matching User Requirements -->
+  <!-- Admin Sub-Navigation Tabs matching Viva Requirements -->
   <div class="admin-subnav">
     <button type="button" class="admin-tab-btn active" id="tab-btn-categories" onclick="showAdminSection('categories')">
       📁 Categories (Add & Remove)
@@ -80,27 +80,27 @@
 
     <!-- Add Category Form -->
     <div class="admin-form-card">
-      <h3 style="margin-bottom: 15px; color: var(--primary-color);">➕ Add New Category</h3>
+      <h3 style="margin-bottom: 12px; color: var(--primary);">➕ Add New Category</h3>
       <form onsubmit="handleAddCategory(event)">
         <div class="admin-form-grid">
           <div>
-            <label style="font-size:0.85rem; font-weight:600;">Category Name *</label>
+            <label style="font-size:0.82rem; font-weight:600;">Category Name *</label>
             <input type="text" id="cat-name" class="form-control" placeholder="e.g. Papad & Fryums" required>
           </div>
           <div>
-            <label style="font-size:0.85rem; font-weight:600;">Category Slug (URL) *</label>
+            <label style="font-size:0.82rem; font-weight:600;">Category Slug (URL) *</label>
             <input type="text" id="cat-slug" class="form-control" placeholder="e.g. papad" required>
           </div>
           <div>
-            <label style="font-size:0.85rem; font-weight:600;">Icon Emoji</label>
+            <label style="font-size:0.82rem; font-weight:600;">Icon Emoji</label>
             <input type="text" id="cat-icon" class="form-control" placeholder="e.g. 🍘" value="🍲">
           </div>
           <div style="grid-column: 1 / -1;">
-            <label style="font-size:0.85rem; font-weight:600;">Description</label>
+            <label style="font-size:0.82rem; font-weight:600;">Description</label>
             <input type="text" id="cat-desc" class="form-control" placeholder="Brief description of products in this category">
           </div>
         </div>
-        <button type="submit" id="btn-add-cat" class="btn-confirm-order" style="width: auto; padding: 10px 24px; margin-top: 15px;">
+        <button type="submit" class="btn-confirm-order" style="width: auto; padding: 9px 20px; margin-top: 12px;">
           ➕ Add Category to SQL
         </button>
       </form>
@@ -178,7 +178,7 @@
             <th>Total Amount</th>
             <th>Payment</th>
             <th>Status</th>
-            <th>Actions</th>
+            <th>Bill Receipt</th>
           </tr>
         </thead>
         <tbody id="orders-table-tbody">
@@ -199,39 +199,39 @@
 
     <!-- Add Product Form -->
     <div class="admin-form-card">
-      <h3 style="margin-bottom: 15px; color: var(--primary-color);">➕ Add New Product to Inventory</h3>
+      <h3 style="margin-bottom: 12px; color: var(--primary);">➕ Add New Product to Inventory</h3>
       <form onsubmit="handleAddProduct(event)">
         <div class="admin-form-grid">
           <div>
-            <label style="font-size:0.85rem; font-weight:600;">Category *</label>
+            <label style="font-size:0.82rem; font-weight:600;">Category *</label>
             <select id="prod-category" class="form-control" required></select>
           </div>
           <div>
-            <label style="font-size:0.85rem; font-weight:600;">Product Name *</label>
+            <label style="font-size:0.82rem; font-weight:600;">Product Name *</label>
             <input type="text" id="prod-name" class="form-control" placeholder="e.g. Sambar Masala" required>
           </div>
           <div>
-            <label style="font-size:0.85rem; font-weight:600;">Marathi Name</label>
+            <label style="font-size:0.82rem; font-weight:600;">Marathi Name</label>
             <input type="text" id="prod-marathi" class="form-control" placeholder="e.g. सांबार मसाला">
           </div>
           <div>
-            <label style="font-size:0.85rem; font-weight:600;">Price (1 Kg) *</label>
+            <label style="font-size:0.82rem; font-weight:600;">Price (1 Kg) *</label>
             <input type="number" id="prod-p1kg" class="form-control" placeholder="500" step="1" required>
           </div>
           <div>
-            <label style="font-size:0.85rem; font-weight:600;">Price (250 Gm) *</label>
+            <label style="font-size:0.82rem; font-weight:600;">Price (250 Gm) *</label>
             <input type="number" id="prod-p250g" class="form-control" placeholder="130" step="1" required>
           </div>
           <div>
-            <label style="font-size:0.85rem; font-weight:600;">Initial Stock Qty *</label>
+            <label style="font-size:0.82rem; font-weight:600;">Initial Stock Qty *</label>
             <input type="number" id="prod-stock" class="form-control" value="50" min="0" required>
           </div>
           <div style="grid-column: 1 / -1;">
-            <label style="font-size:0.85rem; font-weight:600;">Description</label>
-            <input type="text" id="prod-desc" class="form-control" placeholder="Aromatic blend of roasted lentils and spices">
+            <label style="font-size:0.82rem; font-weight:600;">Description</label>
+            <input type="text" id="prod-desc" class="form-control" placeholder="Aromatic blend of roasted spices">
           </div>
         </div>
-        <button type="submit" id="btn-add-prod" class="btn-confirm-order" style="width: auto; padding: 10px 24px; margin-top: 15px;">
+        <button type="submit" class="btn-confirm-order" style="width: auto; padding: 9px 20px; margin-top: 12px;">
           ➕ Save Product to SQL
         </button>
       </form>
@@ -248,7 +248,7 @@
             <th>Rate (1 Kg)</th>
             <th>Rate (250 Gm)</th>
             <th>Avail. Stock (Qty)</th>
-            <th>Stock Status</th>
+            <th>Status</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -262,7 +262,7 @@
 </main>
 
 <footer>
-  <p><b>Lucky Traders</b> • Hadapsar Pune, India • Admin Panel</p>
+  <p><b>Lucky Traders</b> • Hadapsar Pune • Admin Panel</p>
 </footer>
 
 <script src="app.js"></script>
@@ -288,16 +288,16 @@
 
     const sec = document.getElementById(`section-${secName}`);
     const tabBtn = document.getElementById(`tab-btn-${secName}`);
-
     if (sec) sec.classList.add('active');
     if (tabBtn) tabBtn.classList.add('active');
   }
 
+  // Load all 4 modules and KPI stats from SQL Backend
   async function loadAllAdminData() {
     if (!checkAdminAuth()) return;
 
     try {
-      // 1. Stats
+      // 1. KPI Stats
       const statsRes = await fetch(`${API_BASE}/admin/stats`);
       const statsData = await statsRes.json();
       if (statsData.success) {
@@ -346,7 +346,7 @@
     }
   }
 
-  // --- Category Functions ---
+  // Categories rendering & actions
   function renderCategories(cats) {
     const tbody = document.getElementById('categories-table-tbody');
     tbody.innerHTML = cats.map(c => `
@@ -356,7 +356,7 @@
         <td style="font-size:0.85rem; color:#555;">${c.description || '-'}</td>
         <td style="text-align:center;"><b>${c.product_count || 0}</b> items</td>
         <td>
-          <button class="btn-remove" style="padding:4px 8px; border:1px solid #e74c3c; border-radius:4px; font-size:0.8rem;" onclick="handleDeleteCategory(${c.id}, '${c.name}')">
+          <button class="btn-remove" style="border:1px solid #e74c3c; padding:3px 8px; border-radius:4px; font-size:0.8rem;" onclick="handleDeleteCategory(${c.id}, '${c.name}')">
             🗑️ Remove
           </button>
         </td>
@@ -386,7 +386,7 @@
       const data = await res.json();
       if (!data.success) throw new Error(data.error);
 
-      Cart.showToast(`Category "${name}" created in SQL!`);
+      Cart.showToast(`Category "${name}" added to SQL!`);
       document.getElementById('cat-name').value = '';
       document.getElementById('cat-slug').value = '';
       document.getElementById('cat-desc').value = '';
@@ -397,7 +397,7 @@
   }
 
   async function handleDeleteCategory(id, name) {
-    if (!confirm(`Are you sure you want to remove the category "${name}"? All associated products will also be removed from SQL.`)) return;
+    if (!confirm(`Are you sure you want to remove "${name}" and all associated products?`)) return;
 
     try {
       const res = await fetch(`${API_BASE}/admin/categories/${id}`, { method: 'DELETE' });
@@ -411,7 +411,7 @@
     }
   }
 
-  // --- Customer Data Functions ---
+  // Customers rendering
   function renderCustomers(customers) {
     const tbody = document.getElementById('customers-table-tbody');
     if (customers.length === 0) {
@@ -432,7 +432,7 @@
     `).join('');
   }
 
-  // --- Order Data Functions ---
+  // Orders rendering & status update
   function renderOrders(orders) {
     const tbody = document.getElementById('orders-table-tbody');
     if (orders.length === 0) {
@@ -464,7 +464,7 @@
             </select>
           </td>
           <td>
-            <a href="receipt.html?order=${encodeURIComponent(ord.order_number)}" target="_blank" class="btn-sm-order" style="text-decoration:none; display:inline-block;">
+            <a href="receipt.html?order=${encodeURIComponent(ord.order_number)}" target="_blank" class="btn-sm-order" style="display:inline-block;">
               🧾 View Bill
             </a>
           </td>
@@ -490,7 +490,7 @@
     }
   }
 
-  // --- Available Stock & Product Functions ---
+  // Available Stock & Product rendering
   function renderStock(products) {
     const tbody = document.getElementById('stock-table-tbody');
     tbody.innerHTML = products.map(prod => `
@@ -499,11 +499,11 @@
           <b>${prod.name}</b><br>
           <span style="font-size:0.8rem; color:#888;">${prod.marathi_name || ''}</span>
         </td>
-        <td><span class="badge-weight">${prod.category_name}</span></td>
+        <td><span style="background:#eee; padding:2px 6px; border-radius:4px; font-size:0.8rem;">${prod.category_name}</span></td>
         <td class="price-tag">₹${prod.price_1kg}</td>
         <td class="price-tag">₹${prod.price_250g}</td>
         <td>
-          <input type="number" id="stock-input-${prod.id}" value="${prod.stock_qty || 0}" min="0" style="width:70px; padding:4px; font-weight:bold; text-align:center;">
+          <input type="number" id="stock-input-${prod.id}" value="${prod.stock_qty || 0}" min="0" style="width:65px; padding:4px; font-weight:bold; text-align:center;">
         </td>
         <td>
           ${(prod.stock_qty > 0)
@@ -512,10 +512,8 @@
           }
         </td>
         <td>
-          <div class="table-action-btns">
-            <button class="btn-sm-order" style="background:#27ae60;" onclick="handleSaveStock(${prod.id})">💾 Save</button>
-            <button class="btn-remove" style="padding:4px 8px; border:1px solid #e74c3c; border-radius:4px; font-size:0.8rem;" onclick="handleDeleteProduct(${prod.id}, '${prod.name}')">🗑️ Delete</button>
-          </div>
+          <button class="btn-sm-order" style="background:#27ae60;" onclick="handleSaveStock(${prod.id})">💾 Save</button>
+          <button class="btn-remove" style="border:1px solid #e74c3c; padding:3px 8px; border-radius:4px; font-size:0.8rem;" onclick="handleDeleteProduct(${prod.id}, '${prod.name}')">🗑️ Delete</button>
         </td>
       </tr>
     `).join('');
@@ -523,10 +521,7 @@
 
   async function handleSaveStock(prodId) {
     const newQty = parseInt(document.getElementById(`stock-input-${prodId}`).value, 10);
-    if (isNaN(newQty) || newQty < 0) {
-      alert('Please enter a valid stock quantity.');
-      return;
-    }
+    if (isNaN(newQty) || newQty < 0) return alert('Enter valid quantity');
 
     try {
       const res = await fetch(`${API_BASE}/admin/products/${prodId}/stock`, {
@@ -558,15 +553,7 @@
       const res = await fetch(`${API_BASE}/admin/products`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          categoryId,
-          name,
-          marathiName,
-          price1kg,
-          price250g,
-          stockQty,
-          description
-        })
+        body: JSON.stringify({ categoryId, name, marathiName, price1kg, price250g, stockQty, description })
       });
       const data = await res.json();
       if (!data.success) throw new Error(data.error);
@@ -584,7 +571,7 @@
   }
 
   async function handleDeleteProduct(id, name) {
-    if (!confirm(`Are you sure you want to remove product "${name}" from store?`)) return;
+    if (!confirm(`Are you sure you want to remove "${name}" from store?`)) return;
 
     try {
       const res = await fetch(`${API_BASE}/admin/products/${id}`, { method: 'DELETE' });

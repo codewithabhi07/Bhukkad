@@ -8,12 +8,15 @@
 | Parameter | Value |
 |---|---|
 | **Project Title** | Lucky Traders - Traditional Maharashtrian Spices & Condiments Web Application |
-| **Domain** | Full-Stack Web Development / E-Commerce Systems |
+| **University & Course** | Savitribai Phule Pune University (SPPU) \| T.Y. B.Sc. (Computer Science) Sem - V \| Course: **CS-331-FP** |
+| **Pattern & Scheme** | NEP CBCS 2026-27 \| Evaluation: **CE: 15 Marks** (7+8) + **EE: 35 Marks** (15+10+10) = **50 Marks Total** |
 | **Architecture** | Client-Server Architecture / Model-View-Controller (MVC) |
 | **Frontend** | HTML5, Semantic CSS3 (Pure Responsive Grid & Flexbox), Vanilla JavaScript (ES6+) |
 | **Backend** | Python 3.x, Flask Micro-framework, RESTful API Design |
 | **Database** | SQLite3 (`lucky_traders.db`) Relational Database with Raw SQL DDL & Transactions |
+| **Payment UPI** | Ashwini Bramhankar \| UPI ID: `ashutb1210@okhdfcbank` \| Scan QR: [`upi_qr.jpg`](file:///c:/Users/lalit/OneDrive/Desktop/New%20folder%20(2)/Bhukkad/upi_qr.jpg) |
 | **Testing** | Python `unittest` Automated Test Suite (8 Test Cases) |
+| **Documentation** | 6-Chapter Academic Project Report: [`PROJECT_REPORT_SPPU_CS331FP.md`](file:///c:/Users/lalit/OneDrive/Desktop/New%20folder%20(2)/Bhukkad/PROJECT_REPORT_SPPU_CS331FP.md) |
 | **Customer Login** | Username: `lalit` \| Password: `lalit123` |
 | **Admin Login** | Username: `admin` \| Password: `admin123` |
 | **Local URL** | `http://localhost:5000` |
@@ -105,15 +108,15 @@
 > **What to Do:**  
 > Click **"Proceed to Checkout →"**. Step 1 (Delivery Info) appears with pre-filled address.  
 > Click **"Proceed to Payment ➔"**. Step 2 appears.  
-> Select **"Instant UPI / QR Code"**: the dynamic QR code appears with UPI ID `luckytraders@upi`.  
+> Select **"Instant UPI / QR Code"**: the official Google Pay QR code appears for **Ashwini Bramhankar** with UPI ID `ashutb1210@okhdfcbank`.  
 > Switch back to **"Cash on Delivery"** and click **"Confirm & View Bill 🧾"**.
 >
 > **What to Say:**  
 > "Our checkout is a streamlined two-step modal:
 > - **Step 1:** Delivery information in Pune.
-> - **Step 2:** Payment selection. Customers can choose Cash on Delivery or scan the generated UPI QR Code.
+> - **Step 2:** Payment selection. Customers can choose Cash on Delivery or scan the live Google Pay UPI QR Code mapped to `ashutb1210@okhdfcbank` (Ashwini Bramhankar).
 > 
-> When I click 'Confirm & View Bill', an HTTP `POST` request is sent to `/api/orders`. The backend validates all items, executes an atomic SQL transaction, decrements the available stock count, and routes us to the dynamic bill."
+> When I click 'Confirm & View Bill', an HTTP `POST` request is sent to `/api/orders`. The backend validates all items, executes an atomic SQL transaction, decrements the available stock count in real-time, and routes us to the dynamic bill."
 
 ---
 

@@ -1,13 +1,18 @@
 # 🌶️ Lucky Traders - Python & SQL Web Application
 
-> **An Authentic Maharashtrian Spices, Dry Chutneys & Pickles E-Commerce Platform**  
-> *Developed for Academic Project Presentation & Full-Stack Demonstration*
+> **Savitribai Phule Pune University, Pune (SPPU)**  
+> **T. Y. B. Sc. (Computer Science) — Sem - V | Course Code: CS-331-FP (Project)**  
+> **Pattern: NEP CBCS 2026-27 | Major: Computer Science**  
+> *Examination Scheme: CE: 15 Marks (7+8) + EE: 35 Marks (15+10+10) = 50 Marks Total*
 
 ---
 
-## 📋 1. Project Abstract
+## 📋 1. Project Abstract & Syllabus Compliance
 
-**Lucky Traders** is a full-stack e-commerce web application developed to modernize a traditional Maharashtrian spice and condiment merchant based in Hadapsar, Pune. 
+**Lucky Traders** is a full-stack e-commerce web application engineered to modernize a traditional Maharashtrian spice and condiment merchant based in Hadapsar, Pune. Built in accordance with SPPU Syllabus CS-331-FP guidelines, the system includes:
+- **Full Academic Project Report**: [`PROJECT_REPORT_SPPU_CS331FP.md`](file:///c:/Users/lalit/OneDrive/Desktop/New%20folder%20(2)/Bhukkad/PROJECT_REPORT_SPPU_CS331FP.md) strictly following Chapters 1–6 (Preliminary Investigation, Requirements, Database Design, System UML Diagrams, Screen Layouts, References).
+- **Official UPI QR Payment**: Real Google Pay QR scanning for **Ashwini Bramhankar** (UPI ID: `ashutb1210@okhdfcbank`), saved in [`upi_qr.jpg`](file:///c:/Users/lalit/OneDrive/Desktop/New%20folder%20(2)/Bhukkad/upi_qr.jpg).
+- **Student Code Walkthrough Guide**: [`CODE_EXPLANATION_GUIDE.md`](file:///c:/Users/lalit/OneDrive/Desktop/New%20folder%20(2)/Bhukkad/CODE_EXPLANATION_GUIDE.md) and Presentation Script in [`COLLEGE_PRESENTATION_SCRIPT.md`](file:///c:/Users/lalit/OneDrive/Desktop/New%20folder%20(2)/Bhukkad/COLLEGE_PRESENTATION_SCRIPT.md). 
 
 ### Core Features:
 - **Dual-Pricing & Packaging**: Every product supports both wholesale (`1 Kg`) and retail (`250 Gm`) weights with dynamic price calculation.
