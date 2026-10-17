@@ -37,7 +37,7 @@ class LuckyTradersPythonTestCase(unittest.TestCase):
 
     def test_04_user_authentication(self):
         # 1. Customer login
-        res = self.client.post('/api/auth/login', json={'username': 'lalit', 'password': 'lalit123'})
+        res = self.client.post('/api/auth/login', json={'username': 'User', 'password': 'User123'})
         self.assertEqual(res.status_code, 200)
         data = res.get_json()
         self.assertTrue(data['success'])

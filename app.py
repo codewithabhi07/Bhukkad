@@ -296,7 +296,7 @@ if __name__ == '__main__':
     print(f"Local URL: http://localhost:{port}")
     print("Database: Python sqlite3 connected to lucky_traders.db")
     print("Admin Login: admin / admin123")
-    print("Customer Login: lalit / lalit123")
+    print("Customer Login: User / User123")
     print("=" * 60)
     app.run(host='0.0.0.0', port=port, debug=False)
 

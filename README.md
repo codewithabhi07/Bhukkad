@@ -185,7 +185,7 @@ python test_app.py
 
 | Role | Username | Password | Notes |
 |---|---|---|---|
-| **Customer** | `lalit` | `lalit123` | Pre-seeded with past orders and delivery address |
+| **Customer** | `User` | `User123` | Pre-seeded with past orders and delivery address |
 | **Admin** | `admin` | `admin123` | Full access to manage catalog, orders, and stock |
 | **New User** | *(Register)* | *(Any)* | Can be registered on the **📝 Register** tab |
 

@@ -17,7 +17,7 @@
 | **Payment UPI** | Ashwini Bramhankar \| UPI ID: `ashutb1210@okhdfcbank` \| Scan QR: [`upi_qr.jpg`](file:///c:/Users/lalit/OneDrive/Desktop/New%20folder%20(2)/Bhukkad/upi_qr.jpg) |
 | **Testing** | Python `unittest` Automated Test Suite (8 Test Cases) |
 | **Documentation** | 6-Chapter Academic Project Report: [`PROJECT_REPORT_SPPU_CS331FP.md`](file:///c:/Users/lalit/OneDrive/Desktop/New%20folder%20(2)/Bhukkad/PROJECT_REPORT_SPPU_CS331FP.md) |
-| **Customer Login** | Username: `lalit` \| Password: `lalit123` |
+| **Customer Login** | Username: `User` \| Password: `User123` |
 | **Admin Login** | Username: `admin` \| Password: `admin123` |
 | **Local URL** | `http://localhost:5000` |
 
@@ -71,10 +71,10 @@
 
 #### Step 1: Dual-Role Authentication & Customer Login
 > **What to Do:**  
-> Show the Login page. Click the **"👤 User Login"** tab. Click the **"Autofill Customer"** button (`lalit` / `lalit123`) and click **"Login as Customer ➔"**.
+> Show the Login page. Click the **"👤 User Login"** tab. Note the pre-filled credentials (`User` / `User123`) and click **"Login as Customer ➔"**.
 >
 > **What to Say:**  
-> "As you can see on the screen, the portal provides distinct tabs for **User Login**, **Admin Login**, and **Customer Registration**. We have implemented role-based access control. I will now log in as our demo customer, Lalit Kumar. Upon successful authentication against the SQL database, the user session is stored and we are redirected to the storefront homepage."
+> "As you can see on the screen, the portal provides distinct tabs for **User Login**, **Admin Login**, and **Customer Registration**. We have implemented role-based access control. I will now log in as our demo customer (`User` / `User123`). Upon successful authentication against the SQL database, the user session is stored and we are redirected to the storefront homepage."
 
 ---
 
